@@ -76,15 +76,15 @@ public class Sistema {
         return false;
     }
 
-    public boolean cadastramatricula(Matricula matricula){
-        if(matricula != null){
-            for(int i =0; i<matriculas.length; i++){
-                if(matriculas[i] !=null && matriculas[i].getAluno()== matricula.getAluno()){
+    public boolean cadastramatricula(Matricula matricula) {
+        if (matricula != null) {
+            for (int i = 0; i < matriculas.length; i++) {
+                if (matriculas[i] != null && matriculas[i].getAluno() == matricula.getAluno()) {
                     return false;
                 }
             }
-            for(int i =0; i<matriculas.length; i++){
-                if(matriculas[i] == null){
+            for (int i = 0; i < matriculas.length; i++) {
+                if (matriculas[i] == null) {
                     matriculas[i] = matricula;
                     return true;
                 }
@@ -92,5 +92,56 @@ public class Sistema {
         }
         return false;
     }
+
+    public Aluno buscarAluno(long nmatricula) {
+        if (alunos != null && nmatricula > 0) {
+            for (int i = 0; i < alunos.length; i++) {
+                if (alunos[i] != null && alunos[i].getNumMatricula() == nmatricula) {
+                    return alunos[i];
+
+                }
+            }
+            return null;
+        }
+        return null;
+    }
+    public Disciplina buscarDisciplina(long cddisciplina){
+        if(disciplinas != null && cddisciplina>0){
+            for(int i = 0; i<disciplinas.length;i++){
+                if(disciplinas[i] != null && disciplinas[i].getCddisciplina() == cddisciplina){
+                    return disciplinas[i];
+                }
+            }
+            return null;
+        }
+        return null;
+    }
+
+    public Turma buscarTurma(int ano){
+        if(turmas != null && ano > 0){
+            for(int i = 0; i<turmas.length;i++){
+                if(turmas[i] != null && turmas[i].getAno() == ano){
+                    return turmas[i];
+
+                }
+            } 
+            return null;
+        }
+        return null;
+    }
+
+    public Matricula buscarMatricula(long nmatriculaAluno){
+        if(matriculas != null){
+            for(int i = 0; i<matriculas.length; i++){
+                if(matriculas[i] != null && matriculas[i].getAluno().getNumMatricula() == nmatriculaAluno){
+                    return matriculas[i];
+                }
+            }
+            return null;
+        }
+        return null;
+    }
+    
+
 
 }
