@@ -7,7 +7,7 @@ public class Turma {
     
     private Turma(int ano, int numerovagas) {
         
-        if(ano != 0 && numerovagas != 0 && disciplinas != null && matriculas != null){
+        if(ano != 0 && numerovagas != 0){
             this.ano = ano;
             this.numerovagas = numerovagas;
             this.disciplinas = new Disciplina[numerovagas];
