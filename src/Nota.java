@@ -1,8 +1,19 @@
-
 public class Nota {
     private Disciplina disc;
     private Matricula matricula;
     private double valor;
+    
+    private Nota(Disciplina disc, Matricula matricula, double valor){
+        setDisc(disc);
+        setMatricula(matricula);
+        setValor(valor);
+    }
+
+    public static Nota getInstance(Disciplina disc, Matricula matricula, double valor){
+        return new Nota(disc, matricula, valor);
+    }
+    
+    
     public Disciplina getDisc() {
         return disc;
     }
