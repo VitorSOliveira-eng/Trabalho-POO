@@ -13,11 +13,13 @@ public class Aluno {
         // construtor chaamndo regra 3
     public Aluno(String nome, String cpf) {
         this();
-        this.nome = nome;
-        this.cpf = cpf;
+        if(nome != null && cpf != null && cpf.length() > 10){
+            this.nome = nome;
+            this.cpf = cpf;
+        } 
     }
 
-        // método fábrica
+
     public static Aluno criarAluno(String nome, String cpf) {
         if(nome != null && cpf != null && cpf.length() > 10){
             return new Aluno(nome, cpf);
