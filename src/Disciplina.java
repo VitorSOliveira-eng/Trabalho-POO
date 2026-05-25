@@ -6,28 +6,29 @@ public class Disciplina {
     private String professor;
     private static long ndisciplina = 0;
 
-    private Disciplina() {
+    private Disciplina(String nome, String professor) {
         ndisciplina++;
         cddisciplina = ndisciplina;
+        setNome(nome);
+        setProfessor(professor);
+
     }
 
-    public Disciplina(String nome) {
-        this();
-        this.nome = nome;
+    public static Disciplina getInstance(String nome, String professor) {
+        return new Disciplina(nome, professor);
     }
 
     public long getCddisciplina() {
         return cddisciplina;
     }
 
-
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
-        if(nome != null && nome.length()>3)
-        this.nome = nome;
+        if (nome != null && nome.length() > 3)
+            this.nome = nome;
     }
 
     public String getProfessor() {
@@ -35,12 +36,8 @@ public class Disciplina {
     }
 
     public void setProfessor(String professor) {
-        if(professor !=null && professor.length()>3)
-         this.professor = professor;
+        if (professor != null && professor.length() > 3)
+            this.professor = professor;
     }
 
-
-
-
-    
 }
