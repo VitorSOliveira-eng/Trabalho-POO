@@ -4,17 +4,29 @@ public class Aluno {
     private String nome;
     private String cpf;
     private Matricula mat;
-    private static long nmatricula = 0;
-
+    private static long nmatricula = 1;
+        // construtor privado regra 3
     private Aluno() {
-        nmatricula ++;
         numMatricula= nmatricula ;
+        nmatricula ++;
     }
-
-    public Aluno(String nome) {
+        // construtor chaamndo regra 3
+    public Aluno(String nome, String cpf) {
         this();
         this.nome = nome;
+        this.cpf = cpf;
     }
+
+        // método fábrica
+    public static Aluno criarAluno(String nome, String cpf) {
+        if(nome != null && cpf != null && cpf.length() > 10){
+            return new Aluno(nome, cpf);
+        } else {
+            return null;
+        }
+    }   
+
+
 
     public long getNumMatricula() {
         return numMatricula;
@@ -22,7 +34,7 @@ public class Aluno {
 
     public String getNome() {
         return nome;
-    }
+    }   
 
     public void setNome(String nome) {
         if(nome != null && nome.length() > 3)
@@ -34,16 +46,18 @@ public class Aluno {
     }
 
     public void setCpf(String cpf) {
-        if(cpf !=null && cpf.length()>10)
+        if(cpf !=null && cpf.length() > 10)
         this.cpf = cpf;
     }
 
     public Matricula getMat() {
         return mat;
     }
+    
     //fazer a verificacao
     public void setMat(Matricula mat) {
-        this.mat = mat;
+        if(mat != null)
+            this.mat = mat;
     }
 
     
