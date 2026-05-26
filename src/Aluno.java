@@ -1,34 +1,27 @@
-
 public class Aluno {
     private long numMatricula;
     private String nome;
     private String cpf;
     private Matricula mat;
     private static long nmatricula = 1;
-        // construtor privado regra 3
-    private Aluno() {
-        numMatricula= nmatricula ;
-        nmatricula ++;
-    }
-        // construtor chaamndo regra 3
-    public Aluno(String nome, String cpf) {
-        this();
-        if(nome != null && cpf != null && cpf.length() > 10){
-            this.nome = nome;
-            this.cpf = cpf;
-        } 
-    }
 
+    public Aluno(String nome, String cpf) {
+        setNome(nome);
+        setCpf(cpf);
+
+        if (this.nome != null && this.cpf != null) {
+            this.numMatricula = nmatricula;
+            nmatricula++;
+        }
+    }
 
     public static Aluno criarAluno(String nome, String cpf) {
-        if(nome != null && cpf != null && cpf.length() > 10){
+        if (nome != null && cpf != null && cpf.length() > 10) {
             return new Aluno(nome, cpf);
         } else {
             return null;
         }
-    }   
-
-
+    }
 
     public long getNumMatricula() {
         return numMatricula;
@@ -36,11 +29,11 @@ public class Aluno {
 
     public String getNome() {
         return nome;
-    }   
+    }
 
     public void setNome(String nome) {
-        if(nome != null && nome.length() > 3)
-        this.nome = nome;
+        if (nome != null && nome.length() > 3)
+            this.nome = nome;
     }
 
     public String getCpf() {
@@ -48,20 +41,30 @@ public class Aluno {
     }
 
     public void setCpf(String cpf) {
-        if(cpf !=null && cpf.length() > 10)
-        this.cpf = cpf;
+        if (cpf != null && cpf.length() > 10)
+            this.cpf = cpf;
     }
 
     public Matricula getMat() {
         return mat;
     }
-    
-    //fazer a verificacao
+
+    // fazer a verificacao
     public void setMat(Matricula mat) {
-        if(mat != null)
+        if (mat != null)
             this.mat = mat;
     }
 
-    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Aluno{");
+        sb.append("numMatricula=").append(numMatricula);
+        sb.append(", nome=").append(nome);
+        sb.append(", cpf=").append(cpf);
+        sb.append(", mat=").append(mat);
+        sb.append('}');
+        return sb.toString();
+    }
 
 }
