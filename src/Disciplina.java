@@ -7,15 +7,25 @@ public class Disciplina {
     private static long ndisciplina = 0;
 
     private Disciplina(String nome, String professor) {
-        ndisciplina++;
-        cddisciplina = ndisciplina;
         setNome(nome);
         setProfessor(professor);
+        if (nome != null && nome.length() > 3 && professor != null && professor.length() > 3) {
+            ndisciplina++;
+            cddisciplina = ndisciplina;
+
+        }
 
     }
 
-    public static Disciplina getInstance(String nome, String professor) {
-        return new Disciplina(nome, professor);
+    public static Disciplina criarDisciplina(String nome, String professor) {
+        Disciplina novaDisc = new Disciplina(nome, professor);
+
+        // Se o código ficou 0, significa que a validação falhou lá no construtor
+        if (novaDisc.getCddisciplina() == 0) {
+            return null; // Bloqueia a criação do objeto inválido
+        }
+
+        return novaDisc;
     }
 
     public long getCddisciplina() {
