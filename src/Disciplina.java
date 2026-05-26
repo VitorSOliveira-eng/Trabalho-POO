@@ -50,4 +50,15 @@ public class Disciplina {
             this.professor = professor;
     }
 
+        @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Disciplina{");
+        sb.append("cddisciplina=").append(cddisciplina);
+        sb.append(", nome=").append(nome);
+        sb.append(", professor=").append(professor);
+        sb.append('}');
+        return sb.toString();
+    }
+
 }
