@@ -70,7 +70,17 @@ public class Turma {
         return disciplinas; 
     }
     
-    
+        @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Turma{");
+        sb.append("ano=").append(ano);
+        sb.append(", numerovagas=").append(numerovagas);
+        sb.append(", disciplinas=").append(disciplinas);
+        sb.append(", matriculas=").append(matriculas);
+        sb.append('}');
+        return sb.toString();
+    }
     
     
     //private Disciplina disciplina;
