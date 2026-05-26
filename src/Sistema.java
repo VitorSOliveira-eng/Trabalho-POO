@@ -24,7 +24,7 @@ public class Sistema {
         return instance;
     }
 
-    public void initi() {
+    public void init() {
         Disciplina d1 = Disciplina.criarDisciplina("Matemática", "Prof. Mateus");
         Disciplina d2 = Disciplina.criarDisciplina("Portugues", "Cecilia");
         Disciplina d3 = Disciplina.criarDisciplina("Banco de Dados", "Balbino");
@@ -70,7 +70,7 @@ public class Sistema {
     public boolean cadastradisc(Disciplina disc) {
         if (disc != null) {
             for (int i = 0; i < disciplinas.length; i++) {
-                if (disciplinas[i] != null && disciplinas[i].getCddisciplina() == disc.getCddisciplina()) {
+                if (disciplinas[i] != null && disciplinas[i].getCddisciplina() == disc.getCddisciplina() && disciplinas[i].getNome().equals(disc.getNome())) {
                     return false;
                 }
             }
@@ -226,5 +226,69 @@ public class Sistema {
             System.out.println("Nenhuma turma cadastrada no sistema ");
         }
     }
+
+    public boolean excluirAluno(long numMatricula) {
+        if (numMatricula > 0) {
+          
+            if (buscarMatricula(numMatricula) != null) {
+                return false; 
+            }
+            
+            for (int i = 0; i < alunos.length; i++) {
+             
+                if (alunos[i] != null && alunos[i].getNumMatricula() == numMatricula) {
+                    alunos[i] = null; 
+                    return true;      
+                }
+            }
+        }
+        return false; 
+    }
+
+
+    public boolean excluirTurma(int ano){
+        if(ano>0){
+            for(int i =0; i<matriculas.length; i ++){
+                if(matriculas[i] != null && matriculas[i].getTurma().getAno() == ano){
+                    return false;
+                }
+            }
+            for(int i =0; i<turmas.length;i++){
+                if(turmas[i] != null && turmas[i].getAno() == ano){
+                    turmas[i] = null;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean excluirDisciplina(long cddisciplina){
+        if(cddisciplina >0){
+            for(int i =0;i< matriculas.length;i++){
+                if(matriculas[i] != null && matriculas[i].getTurma() != null){
+                    Disciplina[] discDaTurma = matriculas[i].getTurma().getDisciplinas();
+                    for (int j = 0; j < discDaTurma.length; j++) {
+                        if (discDaTurma[j] != null && discDaTurma[j].getCddisciplina() == cddisciplina) {
+                            return false; 
+                        }
+                    }
+
+                }
+            }
+            for(int i =0; i<disciplinas.length;i++){
+                if(disciplinas[i] != null && disciplinas[i].getCddisciplina() == cddisciplina){
+                    disciplinas[i] = null;
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+
+
+
 
 }
