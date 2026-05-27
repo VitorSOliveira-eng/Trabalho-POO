@@ -9,7 +9,6 @@ public class App {
 
         Scanner scanner = new Scanner(System.in);
         int opcaoPrincipal;
-        int subOpcao;
 
         do {
             System.out.println("\n--- MENU PRINCIPAL ---");
@@ -35,235 +34,27 @@ public class App {
 
             switch (opcaoPrincipal) {
                 case 1:
-                    System.out.println("\n--- 1. CADASTRAR ---");
-                    System.out.println("1. Alunos");
-                    System.out.println("2. Disciplina");
-                    System.out.println("3. Turma");
-                    System.out.print("Escolha a subopção: ");
-                    subOpcao = scanner.nextInt();
-                    scanner.nextLine();
-
-                    switch (subOpcao) {
-                        case 1: {
-                            System.out.print("Nome do Aluno: ");
-                            String nome = scanner.nextLine();
-                            System.out.print("CPF do Aluno: ");
-                            String cpf = scanner.nextLine();
-                            
-                            Aluno aluno = Aluno.criarAluno(nome, cpf);
-                            if (sistema.cadastraaluno(aluno)) {
-                                System.out.println("Aluno cadastrado com sucesso!");
-                            } else {
-                                System.out.println("Erro ao cadastrar aluno.");
-                            }
-                            break;
-                        }
-                        case 2: {
-                            System.out.print("Nome da Disciplina: ");
-                            String nome = scanner.nextLine();
-                            System.out.print("Nome do Professor: ");
-                            String professor = scanner.nextLine();
-
-                            Disciplina disc = Disciplina.criarDisciplina(nome, professor);
-                            if (sistema.cadastradisc(disc)) {
-                                System.out.println("Disciplina cadastrada com sucesso!");
-                            } else {
-                                System.out.println("Erro ao cadastrar disciplina.");
-                            }
-                            break;
-                        }
-                        case 3: {
-                            System.out.print("Ano da Turma: ");
-                            int ano = scanner.nextInt();
-                            System.out.print("Número de Vagas: ");
-                            int vagas = scanner.nextInt();
-                            scanner.nextLine();
-
-                            Turma turma = Turma.criarTurma(ano, vagas);
-                            if (sistema.cadastraturma(turma)) {
-                                System.out.println("Turma cadastrada com sucesso!");
-                            } else {
-                                System.out.println("Erro ao cadastrar turma.");
-                            }
-                            break;
-                        }
-                        default:
-                            System.out.println("Opção de cadastro inválida.");
-                            break;
-                    }
+                    menuCadastrar(sistema, scanner);
                     break;
 
                 case 2:
-                    System.out.println("\n--- 2. EXCLUIR ---");
-                    System.out.println("1. Alunos");
-                    System.out.println("2. Disciplina");
-                    System.out.println("3. Turma");
-                    System.out.print("Escolha a subopção: ");
-                    subOpcao = scanner.nextInt();
-                    scanner.nextLine();
-
-                    switch (subOpcao) {
-                        case 1:
-                            System.out.print("Digite o número da matrícula do aluno a excluir: ");
-                            long matAluno = scanner.nextLong();
-                            scanner.nextLine();
-                            if (sistema.excluirAluno(matAluno)) {
-                                System.out.println("Aluno excluído com sucesso.");
-                            } else {
-                                System.out.println("Não foi possível excluir o aluno.");
-                            }
-                            break;
-                        case 2:
-                            System.out.print("Digite o código da disciplina a excluir: ");
-                            long codDisc = scanner.nextLong();
-                            scanner.nextLine();
-                            if (sistema.excluirDisciplina(codDisc)) {
-                                System.out.println("Disciplina excluída com sucesso.");
-                            } else {
-                                System.out.println("Não foi possível excluir a disciplina.");
-                            }
-                            break;
-                        case 3:
-                            System.out.print("Digite o ano da turma a excluir: ");
-                            int anoTurma = scanner.nextInt();
-                            scanner.nextLine();
-                            if (sistema.excluirTurma(anoTurma)) {
-                                System.out.println("Turma excluída com sucesso.");
-                            } else {
-                                System.out.println("Não foi possível excluir a turma.");
-                            }
-                            break;
-                        default:
-                            System.out.println("Opção de exclusão inválida.");
-                            break;
-                    }
+                    menuExcluir(sistema, scanner);
                     break;
 
                 case 3:
-                    System.out.println("\n--- 3. ALTERAR ---");
-                    System.out.println("1. Alunos");
-                    System.out.println("2. Disciplina");
-                    System.out.println("3. Turma");
-                    System.out.print("Escolha a subopção: ");
-                    subOpcao = scanner.nextInt();
-                    scanner.nextLine();
-
-                    switch (subOpcao) {
-                        case 1: {
-                            System.out.print("Digite a matrícula do aluno que deseja alterar: ");
-                            long mat = scanner.nextLong();
-                            scanner.nextLine();
-                            Aluno a = sistema.buscarAluno(mat);
-                            if (a != null) {
-                                System.out.print("Novo nome para o aluno (Atual: " + a.getNome() + "): ");
-                                String novoNome = scanner.nextLine();
-                                a.setNome(novoNome); 
-                                System.out.println("Dados do aluno atualizados.");
-                            } else {
-                                System.out.println("Aluno não encontrado.");
-                            }
-                            break;
-                        }
-                        case 2: {
-                            System.out.print("Digite o código da disciplina que deseja alterar: ");
-                            long cod = scanner.nextLong();
-                            scanner.nextLine();
-                            Disciplina d = sistema.buscarDisciplina(cod);
-                            if (d != null) {
-                                System.out.print("Novo nome da disciplina (Atual: " + d.getNome() + "): ");
-                                String novoNome = scanner.nextLine();
-                                System.out.print("Novo professor (Atual: " + d.getProfessor() + "): ");
-                                String novoProf = scanner.nextLine();
-                                d.setNome(novoNome);
-                                d.setProfessor(novoProf);
-                                System.out.println("Disciplina atualizada com sucesso.");
-                            } else {
-                                System.out.println("Disciplina não encontrada.");
-                            }
-                            break;
-                        }
-                        case 3: {
-                            System.out.print("Digite o ano da turma que deseja buscar para gerenciar: ");
-                            int ano = scanner.nextInt();
-                            scanner.nextLine();
-                            Turma t = sistema.buscarTurma(ano);
-                            if (t != null) {
-                                System.out.println("Turma localizada. Vincular nova disciplina existente?");
-                                System.out.print("Digite o código da disciplina: ");
-                                long cdDisc = scanner.nextLong();
-                                scanner.nextLine();
-                                Disciplina disc = sistema.buscarDisciplina(cdDisc);
-                                if (disc != null && t.adiciona(disc)) {
-                                    System.out.println("Disciplina vinculada à turma com sucesso!");
-                                } else {
-                                    System.out.println("Não foi possível vincular a disciplina.");
-                                }
-                            } else {
-                                System.out.println("Turma não encontrada.");
-                            }
-                            break;
-                        }
-                        default:
-                            System.out.println("Opção de alteração inválida.");
-                            break;
-                    }
+                    menuAlterar(sistema, scanner);
                     break;
 
                 case 4:
-                    System.out.println("\n--- 4. LISTAR ---");
-                    System.out.println("1. Alunos");
-                    System.out.println("2. Disciplina");
-                    System.out.println("3. Turma");
-                    System.out.print("Escolha a subopção: ");
-                    subOpcao = scanner.nextInt();
-                    scanner.nextLine();
-
-                    switch (subOpcao) {
-                        case 1:
-                            System.out.println("\n--- RELATÓRIO DE ALUNOS ---");
-                            sistema.listarAlunos();
-                            break;
-                        case 2:
-                            System.out.println("\n--- RELATÓRIO DE DISCIPLINAS ---");
-                            sistema.listarDisciplinas();
-                            break;
-                        case 3:
-                            System.out.println("\n--- RELATÓRIO DE TURMAS ---");
-                            sistema.listarTurma();
-                            break;
-                        default:
-                            System.out.println("Opção de listagem inválida.");
-                            break;
-                    }
+                    menuListar(sistema, scanner);
                     break;
 
                 case 5:
-                    System.out.println("\n--- LANÇAMENTO DE NOTAS ---");
-                    System.out.print("Digite o número de matrícula do aluno: ");
-                    long numMatricula = scanner.nextLong();
-                    System.out.print("Digite o código da disciplina: ");
-                    long cddisciplina = scanner.nextLong();
-                    System.out.print("Digite o valor da nota: ");
-                    double valor = scanner.nextDouble();
-                    scanner.nextLine();
-
-                    if (sistema.lancarNota(numMatricula, cddisciplina, valor)) {
-                        System.out.println("Nota lançada e registrada com sucesso no sistema!");
-                    } else {
-                        System.out.println("Falha ao lançar nota. Verifique os dados inseridos.");
-                    }
+                    menuLancarNota(sistema, scanner);
                     break;
 
                 case 6: 
-                    System.out.print("Digite a nova largura das colunas da tabela: ");
-                    if (scanner.hasNextInt()) {
-                        int largura = scanner.nextInt();
-                        sistema.setLarguraColuna(largura);
-                        System.out.println("Largura das tabelas alterada para " + largura + " caracteres.");
-                    } else {
-                        System.out.println("Valor inválido.");
-                    }
-                    scanner.nextLine();
+                    menuMudarLargura(sistema, scanner);
                     break;
 
                 case 0:
@@ -271,7 +62,6 @@ public class App {
                     break;
 
                 default:
-                    // Se o número digitado não corresponder a nenhum case válido
                     if (opcaoPrincipal != -1) { 
                         System.out.println("Opção inválida! Tente novamente.");
                     }
@@ -282,4 +72,322 @@ public class App {
         
         scanner.close();
     }
+
+    // --- MÉTODOS DOS SUBMENUS COM OPÇÃO DE VOLTAR ---
+
+    private static void menuCadastrar(Sistema sistema, Scanner scanner) {
+        int subOpcao;
+        do {
+            System.out.println("\n--- 1. CADASTRAR ---");
+            System.out.println("1. Alunos");
+            System.out.println("2. Disciplina");
+            System.out.println("3. Turma");
+            System.out.println("0. Voltar");
+            System.out.print("Escolha a subopção: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("Por favor, digite um número válido.");
+                scanner.next();
+                subOpcao = -1;
+                continue;
+            }
+
+            subOpcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (subOpcao) {
+                case 1: {
+                    System.out.print("Nome do Aluno: ");
+                    String nome = scanner.nextLine();
+                    System.out.print("CPF do Aluno: ");
+                    String cpf = scanner.nextLine();
+                    
+                    Aluno aluno = Aluno.criarAluno(nome, cpf);
+                    if (sistema.cadastraaluno(aluno)) {
+                        System.out.println("Aluno cadastrado com sucesso!");
+                    } else {
+                        System.out.println("Erro ao cadastrar aluno.");
+                    }
+                    break;
+                }
+                case 2: {
+                    System.out.print("Nome da Disciplina: ");
+                    String nome = scanner.nextLine();
+                    System.out.print("Nome do Professor: ");
+                    String professor = scanner.nextLine();
+
+                    Disciplina disc = Disciplina.criarDisciplina(nome, professor);
+                    if (sistema.cadastradisc(disc)) {
+                        System.out.println("Disciplina cadastrada com sucesso!");
+                    } else {
+                        System.out.println("Erro ao cadastrar disciplina.");
+                    }
+                    break;
+                }
+                case 3: {
+                    System.out.print("Ano da Turma: ");
+                    int ano = scanner.nextInt();
+                    System.out.print("Número de Vagas: ");
+                    int vagas = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Turma turma = Turma.criarTurma(ano, vagas);
+                    if (sistema.cadastraturma(turma)) {
+                        System.out.println("Turma cadastrada com sucesso!");
+                    } else {
+                        System.out.println("Erro ao cadastrar turma.");
+                    }
+                    break;
+                }
+                case 0:
+                    System.out.println("Voltando ao Menu Principal...");
+                    break;
+                default:
+                    System.out.println("Opção de cadastro inválida.");
+                    break;
+            }
+        } while (subOpcao != 0);
+    }
+
+    private static void menuExcluir(Sistema sistema, Scanner scanner) {
+        int subOpcao;
+        do {
+            System.out.println("\n--- 2. EXCLUIR ---");
+            System.out.println("1. Alunos");
+            System.out.println("2. Disciplina");
+            System.out.println("3. Turma");
+            System.out.println("0. Voltar");
+            System.out.print("Escolha a subopção: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("Por favor, digite um número válido.");
+                scanner.next();
+                subOpcao = -1;
+                continue;
+            }
+
+            subOpcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (subOpcao) {
+                case 1:
+                    System.out.print("Digite o número da matrícula do aluno a excluir: ");
+                    long matAluno = scanner.nextLong();
+                    scanner.nextLine();
+                    if (sistema.excluirAluno(matAluno)) {
+                        System.out.println("Aluno excluído com sucesso.");
+                    } else {
+                        System.out.println("Não foi possível excluir o aluno.");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Digite o código da disciplina a excluir: ");
+                    long codDisc = scanner.nextLong();
+                    scanner.nextLine();
+                    if (sistema.excluirDisciplina(codDisc)) {
+                        System.out.println("Disciplina excluída com sucesso.");
+                    } else {
+                        System.out.println("Não foi possível excluir a disciplina.");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Digite o ano da turma a excluir: ");
+                    int anoTurma = scanner.nextInt();
+                    scanner.nextLine();
+                    if (sistema.excluirTurma(anoTurma)) {
+                        System.out.println("Turma excluída com sucesso.");
+                    } else {
+                        System.out.println("Não foi possível excluir a turma.");
+                    }
+                    break;
+                case 0:
+                    System.out.println("Voltando ao Menu Principal...");
+                    break;
+                default:
+                    System.out.println("Opção de exclusão inválida.");
+                    break;
+            }
+        } while (subOpcao != 0);
+    }
+
+    private static void menuAlterar(Sistema sistema, Scanner scanner) {
+        int subOpcao;
+        do {
+          
+
+System.out.println("\n====== MENU DE ALTERAÇÕES ======");
+System.out.println("1. Alterar Aluno");
+System.out.println("2. Alterar Disciplina");
+System.out.println("3. Alterar Turma");
+System.out.println("0. Voltar");
+System.out.print("Escolha uma opção: ");
+subOpcao = scanner.nextInt();
+scanner.nextLine(); // Limpa o buffer do teclado
+
+switch (subOpcao) {
+    case 1: {
+        System.out.print("Digite a matrícula do aluno que deseja alterar: ");
+        long mat = scanner.nextLong();
+        scanner.nextLine(); // Limpa buffer
+
+        Aluno a = sistema.buscarAluno(mat);
+        if (a != null) {
+            System.out.println("\n--- Editando Aluno: " + a.getNome() + " ---");
+            System.out.print("Digite o novo nome: ");
+            String novoNome = scanner.nextLine();
+            System.out.print("Digite o novo CPF: ");
+            String novoCpf = scanner.nextLine();
+
+            // Aciona o método do Sistema
+            if (sistema.alterarAluno(mat, novoNome, novoCpf)) {
+                System.out.println("Aluno atualizado com sucesso!");
+            } else {
+                System.out.println("Erro ao atualizar os dados do aluno.");
+            }
+        } else {
+            System.out.println("Aluno não encontrado no sistema.");
+        }
+        break;
+    }
+
+    case 2: {
+        System.out.print("Digite o código da disciplina que deseja alterar: ");
+        long cod = scanner.nextLong();
+        scanner.nextLine(); // Limpa buffer
+
+        Disciplina d = sistema.buscarDisciplina(cod);
+        if (d != null) {
+            System.out.println("\n--- Editando Disciplina: " + d.getNome() + " ---");
+            System.out.print("Digite o novo nome da disciplina: ");
+            String novoNome = scanner.nextLine();
+            System.out.print("Digite o novo professor responsável: ");
+            String novoProf = scanner.nextLine();
+
+            // Aciona o método do Sistema
+            if (sistema.alterarDisciplina(cod, novoNome, novoProf)) {
+                System.out.println("Disciplina atualizada com sucesso!");
+            } else {
+                System.out.println("Erro ao atualizar os dados da disciplina.");
+            }
+        } else {
+            System.out.println("Disciplina não encontrada no sistema.");
+        }
+        break;
+    }
+
+    case 3: {
+        System.out.print("Digite o ano da turma que deseja alterar: ");
+        int anoAntigo = scanner.nextInt();
+        scanner.nextLine(); // Limpa buffer
+
+        Turma t = sistema.buscarTurma(anoAntigo);
+        if (t != null) {
+            System.out.println("\n--- Editando Turma do Ano: " + t.getAno() + " ---");
+            
+            // Se o usuário digitar o mesmo valor ou 0, seu método trata ou mantém
+            System.out.print("Digite o novo ano para esta turma (ou " + t.getAno() + " para manter): ");
+            int novoAno = scanner.nextInt();
+            
+            System.out.print("Digite a nova quantidade de vagas (ou " + t.getVagas() + " para manter): ");
+            int novasVagas = scanner.nextInt();
+            
+            System.out.print("Deseja adicionar uma nova disciplina? Digite o código (ou 0 para pular): ");
+            long cdDisc = scanner.nextLong();
+            scanner.nextLine(); // Limpa buffer
+
+            // Aciona o método completo do Sistema
+            if (sistema.alterarTurma(anoAntigo, novoAno, novasVagas, cdDisc)) {
+                System.out.println("Processo de alteração da turma concluído!");
+            } else {
+                System.out.println("Não foi possível alterar a turma (Verifique se o novo ano já existe).");
+            }
+        } else {
+            System.out.println("Turma não encontrada no sistema.");
+        }
+        break;
+    }
+
+    case 0:
+        System.out.println("Voltando ao menu principal...");
+        break;
+
+    default:
+        System.out.println("Opção inválida!");
+        break;
+}
+        } while (subOpcao != 0);
+    }
+
+    private static void menuListar(Sistema sistema, Scanner scanner) {
+        int subOpcao;
+        do {
+            System.out.println("\n--- 4. LISTAR ---");
+            System.out.println("1. Alunos");
+            System.out.println("2. Disciplina");
+            System.out.println("3. Turma");
+            System.out.println("0. Voltar");
+            System.out.print("Escolha a subopção: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("Por favor, digite um número válido.");
+                scanner.next();
+                subOpcao = -1;
+                continue;
+            }
+
+            subOpcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (subOpcao) {
+                case 1:
+                    System.out.println("\n--- RELATÓRIO DE ALUNOS ---");
+                    sistema.listarAlunos();
+                    break;
+                case 2:
+                    System.out.println("\n--- RELATÓRIO DE DISCIPLINAS ---");
+                    sistema.listarDisciplinas();
+                    break;
+                case 3:
+                    System.out.println("\n--- RELATÓRIO DE TURMAS ---");
+                    sistema.listarTurma();
+                    break;
+                case 0:
+                    System.out.println("Voltando ao Menu Principal...");
+                    break;
+                default:
+                    System.out.println("Opção de listagem inválida.");
+                    break;
+            }
+        } while (subOpcao != 0);
+    }
+
+    private static void menuLancarNota(Sistema sistema, Scanner scanner) {
+        System.out.println("\n--- LANÇAMENTO DE NOTAS ---");
+        System.out.print("Digite o número de matrícula do aluno: ");
+        long numMatricula = scanner.nextLong();
+        System.out.print("Digite o código da disciplina: ");
+        long cddisciplina = scanner.nextLong();
+        System.out.print("Digite o valor da nota: ");
+        double valor = scanner.nextDouble();
+        scanner.nextLine();
+
+        if (sistema.lancarNota(numMatricula, cddisciplina, valor)) {
+            System.out.println("Nota lançada e registrada com sucesso no sistema!");
+        } else {
+            System.out.println("Falha ao lançar nota. Verifique os dados inseridos.");
+        }
+    }
+
+    private static void menuMudarLargura(Sistema sistema, Scanner scanner) {
+        System.out.print("Digite a nova largura das colunas da tabela: ");
+        if (scanner.hasNextInt()) {
+            int largura = scanner.nextInt();
+            sistema.setLarguraColuna(largura);
+            System.out.println("Largura das tabelas alterada para " + largura + " caracteres.");
+        } else {
+            System.out.println("Valor inválido.");
+        }
+        scanner.nextLine();
+    }
+    
 }
