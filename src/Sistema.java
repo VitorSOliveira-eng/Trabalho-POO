@@ -28,7 +28,7 @@ public class Sistema {
     }
 
     public void init() {
-        Disciplina d1 = Disciplina.criarDisciplina("Matemática", "Prof. Mateus");
+        Disciplina d1 = Disciplina.criarDisciplina("Matemática", "Mateus");
         Disciplina d2 = Disciplina.criarDisciplina("Portugues", "Cecilia");
         Disciplina d3 = Disciplina.criarDisciplina("Banco de Dados", "Balbino");
 
@@ -73,7 +73,8 @@ public class Sistema {
     public boolean cadastradisc(Disciplina disc) {
         if (disc != null) {
             for (int i = 0; i < disciplinas.length; i++) {
-                if (disciplinas[i] != null && disciplinas[i].getCddisciplina() == disc.getCddisciplina() && disciplinas[i].getNome().equals(disc.getNome())) {
+                if (disciplinas[i] != null && disciplinas[i].getCddisciplina() == disc.getCddisciplina()
+                        && disciplinas[i].getNome().equals(disc.getNome())) {
                     return false;
                 }
             }
@@ -189,10 +190,9 @@ public class Sistema {
         return null;
     }
 
-    
     private String ajustarColuna(String texto) {
         String resultado = texto;
-        
+
         while (resultado.length() < larguraColuna) {
             resultado += " ";
         }
@@ -204,10 +204,10 @@ public class Sistema {
 
         for (int i = 0; i < alunos.length; i++) {
             if (alunos[i] != null) {
-                
+
                 String mat = ajustarColuna(alunos[i].getNumMatricula() + "");
                 String nome = ajustarColuna(alunos[i].getNome());
-                
+
                 System.out.println(mat + nome);
                 encontrou = true;
             }
@@ -225,7 +225,7 @@ public class Sistema {
                 String cod = ajustarColuna(disciplinas[i].getCddisciplina() + "");
                 String nome = ajustarColuna(disciplinas[i].getNome());
                 String prof = ajustarColuna(disciplinas[i].getProfessor());
-                
+
                 System.out.println(cod + nome + prof);
                 encontrou = true;
             }
@@ -242,7 +242,7 @@ public class Sistema {
             if (turmas[i] != null) {
                 String ano = ajustarColuna(turmas[i].getAno() + "");
                 String vagas = ajustarColuna(turmas[i].getVagas() + "");
-                
+
                 System.out.println(ano + vagas);
                 encontrou = true;
             }
@@ -254,32 +254,31 @@ public class Sistema {
 
     public boolean excluirAluno(long numMatricula) {
         if (numMatricula > 0) {
-          
+
             if (buscarMatricula(numMatricula) != null) {
-                return false; 
+                return false;
             }
-            
+
             for (int i = 0; i < alunos.length; i++) {
-             
+
                 if (alunos[i] != null && alunos[i].getNumMatricula() == numMatricula) {
-                    alunos[i] = null; 
-                    return true;      
+                    alunos[i] = null;
+                    return true;
                 }
             }
         }
-        return false; 
+        return false;
     }
 
-
-    public boolean excluirTurma(int ano){
-        if(ano>0){
-            for(int i =0; i<matriculas.length; i ++){
-                if(matriculas[i] != null && matriculas[i].getTurma().getAno() == ano){
+    public boolean excluirTurma(int ano) {
+        if (ano > 0) {
+            for (int i = 0; i < matriculas.length; i++) {
+                if (matriculas[i] != null && matriculas[i].getTurma().getAno() == ano) {
                     return false;
                 }
             }
-            for(int i =0; i<turmas.length;i++){
-                if(turmas[i] != null && turmas[i].getAno() == ano){
+            for (int i = 0; i < turmas.length; i++) {
+                if (turmas[i] != null && turmas[i].getAno() == ano) {
                     turmas[i] = null;
                     return true;
                 }
@@ -288,21 +287,21 @@ public class Sistema {
         return false;
     }
 
-    public boolean excluirDisciplina(long cddisciplina){
-        if(cddisciplina >0){
-            for(int i =0;i< matriculas.length;i++){
-                if(matriculas[i] != null && matriculas[i].getTurma() != null){
+    public boolean excluirDisciplina(long cddisciplina) {
+        if (cddisciplina > 0) {
+            for (int i = 0; i < matriculas.length; i++) {
+                if (matriculas[i] != null && matriculas[i].getTurma() != null) {
                     Disciplina[] discDaTurma = matriculas[i].getTurma().getDisciplinas();
                     for (int j = 0; j < discDaTurma.length; j++) {
                         if (discDaTurma[j] != null && discDaTurma[j].getCddisciplina() == cddisciplina) {
-                            return false; 
+                            return false;
                         }
                     }
 
                 }
             }
-            for(int i =0; i<disciplinas.length;i++){
-                if(disciplinas[i] != null && disciplinas[i].getCddisciplina() == cddisciplina){
+            for (int i = 0; i < disciplinas.length; i++) {
+                if (disciplinas[i] != null && disciplinas[i].getCddisciplina() == cddisciplina) {
                     disciplinas[i] = null;
                     return true;
                 }
@@ -313,55 +312,106 @@ public class Sistema {
     }
 
     public boolean lancarNota(long numMatricula, long cddisciplina, double valor) {
-    
+
         Matricula matricula = buscarMatricula(numMatricula);
         if (matricula == null) {
-            return false; 
+            return false;
         }
 
-        
         Turma turmaDoAluno = matricula.getTurma();
         if (turmaDoAluno == null) {
-            return false; 
+            return false;
         }
 
-        
         Disciplina disciplinaEncontrada = null;
         Disciplina[] disciplinasDaTurma = turmaDoAluno.getDisciplinas();
-        
+
         if (disciplinasDaTurma != null) {
             for (int i = 0; i < disciplinasDaTurma.length; i++) {
                 if (disciplinasDaTurma[i] != null && disciplinasDaTurma[i].getCddisciplina() == cddisciplina) {
                     disciplinaEncontrada = disciplinasDaTurma[i];
-                    break; 
+                    break;
                 }
             }
         }
 
         if (disciplinaEncontrada == null) {
-            return false; 
+            return false;
         }
 
-        
         Nota novaNota = Nota.getInstance(disciplinaEncontrada, matricula, valor);
 
-    
         for (int i = 0; i < notas.length; i++) {
             if (notas[i] == null) {
                 notas[i] = novaNota;
-                return true; 
+                return true;
             }
         }
 
-        return false; 
+        return false;
     }
 
-    
     public void setLarguraColuna(int larguraColuna) {
         if (larguraColuna > 0) {
             this.larguraColuna = larguraColuna;
         }
     }
+
+    public boolean alterarAluno(long numMatricula, String novonome, String novocpf) {
+        Aluno aluno = buscarAluno(numMatricula);
+        if (aluno != null) {
+            aluno.setNome(novonome);
+            aluno.setCpf(novocpf);
+            return true;
+        }
+        return false;
+    }
     
+    public boolean alterarDisciplina(long cddisciplina, String novonome, String novoprofessor){
+        Disciplina disci = buscarDisciplina(cddisciplina);
+        if(disci !=null){
+            disci.setNome(novonome);
+            disci.setProfessor(novoprofessor);
+            return true;
+        }
+        return false;
+   }
+
+   public boolean alterarTurma(int anoAntigo, int novoAno, int novasVagas, long cdDisciplinaNova) {
+    Turma turma = buscarTurma(anoAntigo);
+    if (turma == null) {
+        return false; 
+    }
+
+
+    if (novoAno > 0) {
+
+        if (anoAntigo != novoAno && buscarTurma(novoAno) != null) {
+            System.out.println("Erro: Já existe uma turma cadastrada no ano " + novoAno);
+            return false;
+        }
+        turma.setAno(novoAno);
+
     
+    if (novasVagas > 0) {
+        turma.setNumerovagas(novasVagas);
+    }
+
+
+    if (cdDisciplinaNova > 0) {
+        Disciplina disc = buscarDisciplina(cdDisciplinaNova);
+        if (disc != null) {
+            boolean adicionou = turma.adiciona(disc);
+            if (!adicionou) {
+                System.out.println("Aviso: Disciplina já estava na turma ou não há espaço.");
+            }
+        } else {
+            System.out.println("Aviso: Código da disciplina não encontrado no sistema.");
+        }
+    }
+
+    return true;
+}
+return false;
+}
 }
