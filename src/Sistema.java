@@ -6,6 +6,8 @@ public class Sistema {
     private Turma[] turmas;
     private Aluno[] alunos;
     private Matricula[] matriculas;
+    private Nota[] notas;
+    private int larguraColuna = 20;
 
     private Sistema() {
 
@@ -13,6 +15,7 @@ public class Sistema {
         turmas = new Turma[100];
         alunos = new Aluno[100];
         matriculas = new Matricula[100];
+        notas = new Nota[100];
     }
 
     public static Sistema getInstance() {
@@ -186,44 +189,66 @@ public class Sistema {
         return null;
     }
 
+    
+    private String ajustarColuna(String texto) {
+        String resultado = texto;
+        
+        while (resultado.length() < larguraColuna) {
+            resultado += " ";
+        }
+        return resultado;
+    }
+
     public void listarAlunos() {
         boolean encontrou = false;
 
         for (int i = 0; i < alunos.length; i++) {
             if (alunos[i] != null) {
-                System.out.println(alunos[i]);
+                
+                String mat = ajustarColuna(alunos[i].getNumMatricula() + "");
+                String nome = ajustarColuna(alunos[i].getNome());
+                
+                System.out.println(mat + nome);
                 encontrou = true;
             }
         }
-        if (encontrou != true) {
+        if (!encontrou) {
             System.out.println("Nenhum aluno cadastrado no sistema");
         }
     }
 
     public void listarDisciplinas() {
         boolean encontrou = false;
+
         for (int i = 0; i < disciplinas.length; i++) {
             if (disciplinas[i] != null) {
-                System.out.println(disciplinas[i]);
+                String cod = ajustarColuna(disciplinas[i].getCddisciplina() + "");
+                String nome = ajustarColuna(disciplinas[i].getNome());
+                String prof = ajustarColuna(disciplinas[i].getProfessor());
+                
+                System.out.println(cod + nome + prof);
                 encontrou = true;
             }
         }
-        if (encontrou != true) {
+        if (!encontrou) {
             System.out.println("Nenhuma disciplina cadastrada no sistema");
         }
     }
 
     public void listarTurma() {
         boolean encontrou = false;
+
         for (int i = 0; i < turmas.length; i++) {
             if (turmas[i] != null) {
-                System.out.println(turmas[i]);
+                String ano = ajustarColuna(turmas[i].getAno() + "");
+                String vagas = ajustarColuna(turmas[i].getVagas() + "");
+                
+                System.out.println(ano + vagas);
                 encontrou = true;
-
             }
         }
-        if (encontrou != true) {
-            System.out.println("Nenhuma turma cadastrada no sistema ");
+        if (!encontrou) {
+            System.out.println("Nenhuma turma cadastrada no sistema");
         }
     }
 
@@ -287,8 +312,56 @@ public class Sistema {
 
     }
 
+    public boolean lancarNota(long numMatricula, long cddisciplina, double valor) {
+    
+        Matricula matricula = buscarMatricula(numMatricula);
+        if (matricula == null) {
+            return false; 
+        }
 
+        
+        Turma turmaDoAluno = matricula.getTurma();
+        if (turmaDoAluno == null) {
+            return false; 
+        }
 
+        
+        Disciplina disciplinaEncontrada = null;
+        Disciplina[] disciplinasDaTurma = turmaDoAluno.getDisciplinas();
+        
+        if (disciplinasDaTurma != null) {
+            for (int i = 0; i < disciplinasDaTurma.length; i++) {
+                if (disciplinasDaTurma[i] != null && disciplinasDaTurma[i].getCddisciplina() == cddisciplina) {
+                    disciplinaEncontrada = disciplinasDaTurma[i];
+                    break; 
+                }
+            }
+        }
 
+        if (disciplinaEncontrada == null) {
+            return false; 
+        }
 
+        
+        Nota novaNota = Nota.getInstance(disciplinaEncontrada, matricula, valor);
+
+    
+        for (int i = 0; i < notas.length; i++) {
+            if (notas[i] == null) {
+                notas[i] = novaNota;
+                return true; 
+            }
+        }
+
+        return false; 
+    }
+
+    
+    public void setLarguraColuna(int larguraColuna) {
+        if (larguraColuna > 0) {
+            this.larguraColuna = larguraColuna;
+        }
+    }
+    
+    
 }
