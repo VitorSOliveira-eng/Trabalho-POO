@@ -4,7 +4,7 @@ public class App {
 
     public static void main(String[] args) {
         Sistema sistema = Sistema.getInstance();
-        // Inicializa os dados pré-cadastrados
+        
         sistema.init(); 
 
         Scanner scanner = new Scanner(System.in);
@@ -24,13 +24,12 @@ public class App {
             // Validação para evitar que o programa quebre se o usuário digitar uma letra
             if (!scanner.hasNextInt()) {
                 System.out.println("Por favor, digite um número válido.");
-                scanner.next(); // Limpa a entrada inválida
-                opcaoPrincipal = -1; // Mantém o loop rodando
-                continue;
+                scanner.next();
+                opcaoPrincipal = -1; 
             }
             
             opcaoPrincipal = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer do teclado
+            scanner.nextLine(); 
 
             switch (opcaoPrincipal) {
                 case 1:
@@ -72,8 +71,6 @@ public class App {
         
         scanner.close();
     }
-
-    // --- MÉTODOS DOS SUBMENUS COM OPÇÃO DE VOLTAR ---
 
     private static void menuCadastrar(Sistema sistema, Scanner scanner) {
         int subOpcao;
@@ -222,13 +219,13 @@ System.out.println("3. Alterar Turma");
 System.out.println("0. Voltar");
 System.out.print("Escolha uma opção: ");
 subOpcao = scanner.nextInt();
-scanner.nextLine(); // Limpa o buffer do teclado
+scanner.nextLine();
 
 switch (subOpcao) {
     case 1: {
         System.out.print("Digite a matrícula do aluno que deseja alterar: ");
         long mat = scanner.nextLong();
-        scanner.nextLine(); // Limpa buffer
+        scanner.nextLine(); 
 
         Aluno a = sistema.buscarAluno(mat);
         if (a != null) {
@@ -238,7 +235,7 @@ switch (subOpcao) {
             System.out.print("Digite o novo CPF: ");
             String novoCpf = scanner.nextLine();
 
-            // Aciona o método do Sistema
+            
             if (sistema.alterarAluno(mat, novoNome, novoCpf)) {
                 System.out.println("Aluno atualizado com sucesso!");
             } else {
@@ -253,7 +250,7 @@ switch (subOpcao) {
     case 2: {
         System.out.print("Digite o código da disciplina que deseja alterar: ");
         long cod = scanner.nextLong();
-        scanner.nextLine(); // Limpa buffer
+        scanner.nextLine(); 
 
         Disciplina d = sistema.buscarDisciplina(cod);
         if (d != null) {
@@ -263,7 +260,7 @@ switch (subOpcao) {
             System.out.print("Digite o novo professor responsável: ");
             String novoProf = scanner.nextLine();
 
-            // Aciona o método do Sistema
+            
             if (sistema.alterarDisciplina(cod, novoNome, novoProf)) {
                 System.out.println("Disciplina atualizada com sucesso!");
             } else {
@@ -278,13 +275,13 @@ switch (subOpcao) {
     case 3: {
         System.out.print("Digite o ano da turma que deseja alterar: ");
         int anoAntigo = scanner.nextInt();
-        scanner.nextLine(); // Limpa buffer
+        scanner.nextLine(); 
 
         Turma t = sistema.buscarTurma(anoAntigo);
         if (t != null) {
             System.out.println("\n--- Editando Turma do Ano: " + t.getAno() + " ---");
             
-            // Se o usuário digitar o mesmo valor ou 0, seu método trata ou mantém
+
             System.out.print("Digite o novo ano para esta turma (ou " + t.getAno() + " para manter): ");
             int novoAno = scanner.nextInt();
             
@@ -293,9 +290,9 @@ switch (subOpcao) {
             
             System.out.print("Deseja adicionar uma nova disciplina? Digite o código (ou 0 para pular): ");
             long cdDisc = scanner.nextLong();
-            scanner.nextLine(); // Limpa buffer
+            scanner.nextLine(); 
 
-            // Aciona o método completo do Sistema
+           
             if (sistema.alterarTurma(anoAntigo, novoAno, novasVagas, cdDisc)) {
                 System.out.println("Processo de alteração da turma concluído!");
             } else {
