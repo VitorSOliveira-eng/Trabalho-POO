@@ -42,7 +42,7 @@ public class Turma {
             return false;
         }
 
-        for (int i = 0; i < matriculas.length; i++) {
+        for (int i = 0; i < disciplinas.length; i++) {
 
             if (disciplinas[i] == null) {
                 disciplinas[i] = b;
