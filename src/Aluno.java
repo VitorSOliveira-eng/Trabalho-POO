@@ -5,7 +5,7 @@ public class Aluno {
     private Matricula mat;
     private static long nmatricula = 1;
 
-    public Aluno(String nome, String cpf) {
+    private Aluno(String nome, String cpf) {
         setNome(nome);
         setCpf(cpf);
 
@@ -49,11 +49,11 @@ public class Aluno {
         return mat;
     }
 
-    // fazer a verificacao
     public void setMat(Matricula mat) {
-        if (mat != null)
+        if (this.mat == null || mat == null) {
             this.mat = mat;
     }
+}
 
     @Override
     public String toString() {
