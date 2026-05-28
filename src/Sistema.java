@@ -252,6 +252,83 @@ public class Sistema {
         }
     }
 
+    public void listarMatriculas() {
+        boolean encontrou = false;
+
+        System.out.println(ajustarColuna("ALUNO") + ajustarColuna("TURMA (ANO)") + ajustarColuna("DATA MATRÍCULA"));
+        System.out.println("------------------------------------------------------------------");
+
+        for (int i = 0; i < matriculas.length; i++) {
+            if (matriculas[i] != null) {
+                String nomeAluno = ajustarColuna(matriculas[i].getAluno().getNome());
+                String anoTurma = ajustarColuna(matriculas[i].getTurma().getAno() + "");
+                String dataMat = ajustarColuna(matriculas[i].getData().toString());
+
+                System.out.println(nomeAluno + anoTurma + dataMat);
+                encontrou = true;
+            }
+        }
+        if (!encontrou) {
+            System.out.println("Nenhuma matrícula realizada no sistema.");
+        }
+    }
+
+  
+public void listarAlunosOrdemCadastro() {
+    boolean encontrou = false;
+    imprimirCabecalhoTabelaAlunos();
+    
+    for (int i = 0; i < alunos.length; i++) {
+        if (alunos[i] != null) {
+            imprimirLinhaAluno(alunos[i]);
+            encontrou = true;
+        }
+    }
+    
+    if (!encontrou) {
+        System.out.println("Nenhum aluno cadastrado no sistema.");
+    }
+}
+
+
+public void listarAlunosOrdemMedia() {
+    int totalAlunos = 0;
+    for (int i = 0; i < alunos.length; i++) {
+        if (alunos[i] != null) totalAlunos++;
+    }
+    
+    if (totalAlunos == 0) {
+        System.out.println("Nenhum aluno cadastrado no sistema.");
+        return;
+    }
+    
+    Aluno[] copiaAlunos = new Aluno[totalAlunos];
+    int index = 0;
+    for (int i = 0; i < alunos.length; i++) {
+        if (alunos[i] != null) {
+            copiaAlunos[index++] = alunos[i];
+        }
+    }
+    
+    for (int i = 0; i < totalAlunos - 1; i++) {
+        for (int j = 0; j < totalAlunos - 1 - i; j++) {
+            double mediaA = calcularMediaAluno(copiaAlunos[j]);
+            double mediaB = calcularMediaAluno(copiaAlunos[j + 1]);
+            
+            if (mediaA < mediaB) {
+                Aluno temp = copiaAlunos[j];
+                copiaAlunos[j] = copiaAlunos[j + 1];
+                copiaAlunos[j + 1] = temp;
+            }
+        }
+    }
+    
+    imprimirCabecalhoTabelaAlunos();
+    for (int i = 0; i < totalAlunos; i++) {
+        imprimirLinhaAluno(copiaAlunos[i]);
+    }
+}
+
     public boolean excluirAluno(long numMatricula) {
         if (numMatricula > 0) {
 
@@ -339,7 +416,7 @@ public class Sistema {
             return false;
         }
 
-        Nota novaNota = Nota.getInstance(disciplinaEncontrada, matricula, valor);
+        Nota novaNota = Nota.criarNota(disciplinaEncontrada, matricula, valor);
 
         for (int i = 0; i < notas.length; i++) {
             if (notas[i] == null) {
@@ -366,52 +443,136 @@ public class Sistema {
         }
         return false;
     }
-    
-    public boolean alterarDisciplina(long cddisciplina, String novonome, String novoprofessor){
+
+    public boolean alterarDisciplina(long cddisciplina, String novonome, String novoprofessor) {
         Disciplina disci = buscarDisciplina(cddisciplina);
-        if(disci !=null){
+        if (disci != null) {
             disci.setNome(novonome);
             disci.setProfessor(novoprofessor);
             return true;
         }
         return false;
-   }
-
-   public boolean alterarTurma(int anoAntigo, int novoAno, int novasVagas, long cdDisciplinaNova) {
-    Turma turma = buscarTurma(anoAntigo);
-    if (turma == null) {
-        return false; 
     }
 
-
-    if (novoAno > 0) {
-
-        if (anoAntigo != novoAno && buscarTurma(novoAno) != null) {
-            System.out.println("Erro: Já existe uma turma cadastrada no ano " + novoAno);
+    public boolean alterarTurma(int anoAntigo, int novoAno, int novasVagas, long cdDisciplinaNova) {
+        Turma turma = buscarTurma(anoAntigo);
+        if (turma == null) {
             return false;
         }
-        turma.setAno(novoAno);
 
-    
-    if (novasVagas > 0) {
-        turma.setNumerovagas(novasVagas);
-    }
+        if (novoAno > 0) {
+            if (anoAntigo != novoAno && buscarTurma(novoAno) != null) {
+                return false;
+            }
+            turma.setAno(novoAno);
+        }
 
+        if (novasVagas > 0) {
+            turma.setNumerovagas(novasVagas);
+        }
 
-    if (cdDisciplinaNova > 0) {
-        Disciplina disc = buscarDisciplina(cdDisciplinaNova);
-        if (disc != null) {
+        if (cdDisciplinaNova > 0) {
+            Disciplina disc = buscarDisciplina(cdDisciplinaNova);
+            if (disc == null) {
+                return false;
+            }
+
             boolean adicionou = turma.adiciona(disc);
             if (!adicionou) {
-                System.out.println("Aviso: Disciplina já estava na turma ou não há espaço.");
+                return false;
             }
-        } else {
-            System.out.println("Aviso: Código da disciplina não encontrado no sistema.");
         }
+
+        return true;
     }
 
-    return true;
-}
-return false;
-}
+    private int contarDisciplinasAluno(Aluno aluno) {
+        Matricula mat = buscarMatricula(aluno.getNumMatricula());
+        if (mat == null || mat.getTurma() == null) {
+            return 0;
+        }
+
+        Disciplina[] discs = mat.getTurma().getDisciplinas();
+        int qtd = 0;
+        for (int i = 0; i < discs.length; i++) {
+            if (discs[i] != null) {
+                qtd++;
+            }
+        }
+        return qtd;
+    }
+
+    private double calcularMediaAluno(Aluno aluno) {
+        Matricula mat = buscarMatricula(aluno.getNumMatricula());
+        if (mat == null || mat.getTurma() == null) {
+            return 0.0;
+        }
+
+        Disciplina[] discs = mat.getTurma().getDisciplinas();
+        double soma = 0;
+        int contNotas = 0;
+
+        for (int i = 0; i < discs.length; i++) {
+            if (discs[i] != null) {
+
+                for (int j = 0; j < notas.length; j++) {
+                    if (notas[j] != null && notas[j].getMatricula() == mat && notas[j].getDisc() == discs[i]) {
+                        soma += notas[j].getValor();
+                        contNotas++;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return contNotas > 0 ? soma / contNotas : 0.0;
+    }
+
+    private void imprimirLinhaAluno(Aluno aluno) {
+      
+        String cod = ajustarColuna(aluno.getNumMatricula() + "");
+        String nome = ajustarColuna(aluno.getNome());
+        String qtd = ajustarColuna(contarDisciplinasAluno(aluno) + "");
+        System.out.print(cod + nome + qtd);
+    
+        
+        Matricula mat = buscarMatricula(aluno.getNumMatricula());
+        StringBuilder sbDisciplinas = new StringBuilder();
+        
+        if (mat != null && mat.getTurma() != null) {
+            Disciplina[] discs = mat.getTurma().getDisciplinas();
+            boolean primeiro = true;
+            
+            for (int i = 0; i < discs.length; i++) {
+                if (discs[i] != null) {
+                    if (!primeiro) {
+                        sbDisciplinas.append(", ");
+                    }
+                    sbDisciplinas.append(discs[i].getNome());
+                    primeiro = false;
+                }
+            }
+        }
+        
+        
+        if (sbDisciplinas.length() == 0) {
+            sbDisciplinas.append("-");
+        }
+        
+        
+        System.out.print(ajustarColuna(sbDisciplinas.toString()));
+    
+       
+        String media = ajustarColuna(String.format("%.1f", calcularMediaAluno(aluno)));
+        System.out.println(media);
+    }
+
+    private void imprimirCabecalhoTabelaAlunos() {
+        System.out.println(ajustarColuna("CÓDIGO") + 
+                           ajustarColuna("NOME") + 
+                           ajustarColuna("QTD DISC") + 
+                           ajustarColuna("DISCIPLINAS") + 
+                           ajustarColuna("MÉDIA"));
+        System.out.println("-----------------------------------------------------------------------------------------------------------------");
+    }
 }
