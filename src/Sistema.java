@@ -192,13 +192,17 @@ public class Sistema {
 
     private String ajustarColuna(String texto) {
         String resultado = texto;
+        
+        // Se o texto já for maior ou igual à largura, força um espaço no final para descolar
+        if (resultado.length() >= larguraColuna) {
+            return resultado + "   "; 
+        }
 
         while (resultado.length() < larguraColuna) {
             resultado += " ";
         }
         return resultado;
     }
-
     public void listarAlunos() {
         boolean encontrou = false;
 
@@ -276,7 +280,7 @@ public class Sistema {
   
 public void listarAlunosOrdemCadastro() {
     boolean encontrou = false;
-    imprimirCabecalhoTabelaAlunos();
+    cabecalhoAlunos();
     
     for (int i = 0; i < alunos.length; i++) {
         if (alunos[i] != null) {
@@ -323,7 +327,7 @@ public void listarAlunosOrdemMedia() {
         }
     }
     
-    imprimirCabecalhoTabelaAlunos();
+    cabecalhoAlunos();
     for (int i = 0; i < totalAlunos; i++) {
         imprimirLinhaAluno(copiaAlunos[i]);
     }
@@ -529,15 +533,15 @@ public void listarAlunosOrdemMedia() {
     }
 
     private void imprimirLinhaAluno(Aluno aluno) {
-      
+        
         String cod = ajustarColuna(aluno.getNumMatricula() + "");
         String nome = ajustarColuna(aluno.getNome());
         String qtd = ajustarColuna(contarDisciplinasAluno(aluno) + "");
         System.out.print(cod + nome + qtd);
-    
-        
+
         Matricula mat = buscarMatricula(aluno.getNumMatricula());
         StringBuilder sbDisciplinas = new StringBuilder();
+        StringBuilder sbNotas = new StringBuilder(); // StringBuilder apenas para as notas
         
         if (mat != null && mat.getTurma() != null) {
             Disciplina[] discs = mat.getTurma().getDisciplinas();
@@ -546,33 +550,46 @@ public void listarAlunosOrdemMedia() {
             for (int i = 0; i < discs.length; i++) {
                 if (discs[i] != null) {
                     if (!primeiro) {
-                        sbDisciplinas.append(", ");
+                        sbDisciplinas.append(",  ");
+                        sbNotas.append(", ");
                     }
                     sbDisciplinas.append(discs[i].getNome());
+                    
+                    // ==========================================================
+                    // VEJA AQUI: Substitua o 0.0 pela sua função real de notas.
+                    // Exemplo: buscarNota(aluno, discs[i]) ou aluno.getNota(discs[i])
+                    // ==========================================================
+                    double notaDaDisciplina = 0.0; 
+                    
+                    sbNotas.append(String.format("%.1f", notaDaDisciplina));
                     primeiro = false;
                 }
             }
         }
         
-        
         if (sbDisciplinas.length() == 0) {
             sbDisciplinas.append("-");
+            sbNotas.append("-");
         }
         
+        // Imprime a coluna de disciplinas normal
+        System.out.print(ajustarColuna(sbDisciplinas.toString() + "   "));
         
-        System.out.print(ajustarColuna(sbDisciplinas.toString()));
-    
-       
+        // NOVO: Cria o espaço exclusivo para as notas usando o seu ajustarColuna
+        System.out.print(ajustarColuna(sbNotas.toString()));
+
+        // Imprime a média final
         String media = ajustarColuna(String.format("%.1f", calcularMediaAluno(aluno)));
         System.out.println(media);
-    }
-
-    private void imprimirCabecalhoTabelaAlunos() {
-        System.out.println(ajustarColuna("CÓDIGO") + 
-                           ajustarColuna("NOME") + 
-                           ajustarColuna("QTD DISC") + 
-                           ajustarColuna("DISCIPLINAS") + 
-                           ajustarColuna("MÉDIA"));
-        System.out.println("-----------------------------------------------------------------------------------------------------------------");
-    }
+}
+    private void cabecalhoAlunos() {
+        String c1 = ajustarColuna("CÓD.");
+        String c2 = ajustarColuna("NOME");
+        String c3 = ajustarColuna("QTD DISC");
+        String c4 = ajustarColuna("DISCIPLINAS");
+        String c5 = ajustarColuna("NOTAS");        // Coluna nova alinhada com o sbNotas
+        String c6 = ajustarColuna("MÉDIA");
+        
+        System.out.println(c1 + c2 + c3 + c4 + c5 + c6);
+}
 }
