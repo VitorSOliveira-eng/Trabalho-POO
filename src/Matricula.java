@@ -1,5 +1,4 @@
 
-
 import java.sql.Date;
 
 public class Matricula {
@@ -31,6 +30,17 @@ public class Matricula {
     }
     public Aluno getAluno() { 
         return aluno; 
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Matricula{");
+        sb.append("data=").append(data);
+        sb.append(", turma=").append(turma);
+        sb.append(", aluno=").append(aluno);
+        sb.append('}');
+        return sb.toString();
     }
 
 
