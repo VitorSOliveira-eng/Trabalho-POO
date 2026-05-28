@@ -541,7 +541,7 @@ public void listarAlunosOrdemMedia() {
 
         Matricula mat = buscarMatricula(aluno.getNumMatricula());
         StringBuilder sbDisciplinas = new StringBuilder();
-        StringBuilder sbNotas = new StringBuilder(); // StringBuilder apenas para as notas
+        StringBuilder sbNotas = new StringBuilder(); 
         
         if (mat != null && mat.getTurma() != null) {
             Disciplina[] discs = mat.getTurma().getDisciplinas();
@@ -555,10 +555,7 @@ public void listarAlunosOrdemMedia() {
                     }
                     sbDisciplinas.append(discs[i].getNome());
                     
-                    // ==========================================================
-                    // VEJA AQUI: Substitua o 0.0 pela sua função real de notas.
-                    // Exemplo: buscarNota(aluno, discs[i]) ou aluno.getNota(discs[i])
-                    // ==========================================================
+                    
                     double notaDaDisciplina = 0.0; 
                     
                     sbNotas.append(String.format("%.1f", notaDaDisciplina));
@@ -575,7 +572,7 @@ public void listarAlunosOrdemMedia() {
         // Imprime a coluna de disciplinas normal
         System.out.print(ajustarColuna(sbDisciplinas.toString() + "   "));
         
-        // NOVO: Cria o espaço exclusivo para as notas usando o seu ajustarColuna
+        
         System.out.print(ajustarColuna(sbNotas.toString()));
 
         // Imprime a média final
@@ -587,7 +584,7 @@ public void listarAlunosOrdemMedia() {
         String c2 = ajustarColuna("NOME");
         String c3 = ajustarColuna("QTD DISC");
         String c4 = ajustarColuna("DISCIPLINAS");
-        String c5 = ajustarColuna("NOTAS");        // Coluna nova alinhada com o sbNotas
+        String c5 = ajustarColuna("NOTAS");       
         String c6 = ajustarColuna("MÉDIA");
         
         System.out.println(c1 + c2 + c3 + c4 + c5 + c6);
