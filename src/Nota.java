@@ -1,16 +1,20 @@
+
 public class Nota {
     private Disciplina disc;
     private Matricula matricula;
     private double valor;
     
-    private Nota(Disciplina disc, Matricula matricula, double valor){
-        setDisc(disc);
-        setMatricula(matricula);
-        setValor(valor);
+    private Nota(Disciplina disc, Matricula matricula, double valor) {
+        this.disc = disc;
+        this.matricula = matricula;
+        this.valor = valor;
     }
-
-    public static Nota getInstance(Disciplina disc, Matricula matricula, double valor){
-        return new Nota(disc, matricula, valor);
+    public static Nota criarNota(Disciplina disc, Matricula matricula, double valor) {
+        if (disc != null && matricula != null && valor >= 0) {
+            return new Nota(disc, matricula, valor);
+        } else {
+            return null;
+        }
     }
     
     
