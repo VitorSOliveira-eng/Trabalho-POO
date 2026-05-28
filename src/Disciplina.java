@@ -20,9 +20,8 @@ public class Disciplina {
     public static Disciplina criarDisciplina(String nome, String professor) {
         Disciplina novaDisc = new Disciplina(nome, professor);
 
-        // Se o código ficou 0, significa que a validação falhou lá no construtor
         if (novaDisc.getCddisciplina() == 0) {
-            return null; // Bloqueia a criação do objeto inválido
+            return null;
         }
 
         return novaDisc;
@@ -50,7 +49,7 @@ public class Disciplina {
             this.professor = professor;
     }
 
-        @Override
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Disciplina{");
